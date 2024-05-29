@@ -17,8 +17,22 @@ class PollingRateApp:
         self.index = index
         self.q = q
 
+        # Informações sobre as taxas de polling ideais
+        info_text = (
+            "1 - Jogos Competitivos e de Ação:\n"
+            "500 Hz a 1000 Hz: Para jogos que requerem uma resposta rápida e precisa, como jogos de tiro em primeira pessoa (FPS) ou de ação rápida, uma taxa de polling alta (500 Hz ou superior) é ideal. Isso resulta em um delay muito baixo, proporcionando uma experiência de jogo mais responsiva.\n\n"
+            "2 - Jogos Casuais e de Simulação:\n"
+            "250 Hz a 500 Hz: Para jogos que não exigem uma resposta extremamente rápida, como jogos de simulação ou de estratégia, uma taxa de polling entre 250 Hz e 500 Hz é geralmente suficiente.\n\n"
+            "3 - Uso Geral:\n"
+            "125 Hz a 250 Hz: Para uso geral, como navegação em menus ou aplicações que não são sensíveis ao tempo, uma taxa de polling entre 125 Hz e 250 Hz é aceitável."
+        )
+
+        # Configuração da interface
         self.label = ttk.Label(root, text=f"{self.joystick_name}\nPolling Rate: -- Hz\nDelay: -- s\nDelay: -- ms", font=("Helvetica", 16))
         self.label.grid(row=index, column=0, padx=10, pady=10, sticky="W")
+
+        self.info_label = ttk.Label(root, text=info_text, font=("Helvetica", 12), wraplength=400)
+        self.info_label.grid(row=index + 1, column=0, padx=10, pady=10, sticky="W")
 
         self.polling_rate = 0
         self.running = True
