@@ -1,9 +1,7 @@
 import time
-import threading
 import pygame
 from PySide6.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QTextEdit
-from PySide6.QtCore import Qt, QTimer, QThread, Signal
-import queue
+from PySide6.QtCore import Qt, QThread, Signal
 
 # Inicialize o Pygame
 pygame.init()
@@ -26,9 +24,9 @@ class PollingRateWorker(QThread):
             poll_count = 0
 
             while time.time() - start_time < 1:
-                pygame.event.pump()
-                poll_count += 1
-                time.sleep(0.001)  # 1ms sleep para reduzir a carga da CPU
+                for event in pygame.event.get():
+                    if event.type == pygame.JOYAXISMOTION:
+                        poll_count += 1
 
             end_time = time.time()
             total_time = end_time - start_time
@@ -44,7 +42,6 @@ class PollingRateApp(QWidget):
         self.index = index
         self.joystick = pygame.joystick.Joystick(index)
         self.joystick_name = self.joystick.get_name()
-        self.q = queue.Queue()
 
         self.setWindowTitle(f"Joystick {self.joystick_name} Polling Rate Monitor")
 
